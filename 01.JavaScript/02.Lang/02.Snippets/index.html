@@ -1,0 +1,53 @@
+<html>
+
+<head>
+    <title>JavaScript snippets</title>
+    <script src="destructive-assign.js"></script>
+    <script src="iteratable-object.js"></script>
+    <script src="decorator.js"></script>
+    <script src="oop.js"></script>
+    <script src="mixin.js"></script>
+    <script src="custom-error.js"></script>
+    <script src="promise.js"></script>
+
+    <script>
+        "use strict"
+
+        let snippets = [{
+            title: "Destrucvie assign",
+            fn: snippetDestructiveAssign
+        }, {
+            title: "Iteratable object",
+            fn: snippetIteratableObject
+        }, {
+            title: "Decorator",
+            fn: snippetDecorator
+        }, {
+            title: "OOP",
+            fn: snippetOop
+        }, {
+            title: "Mixin",
+            fn: snippetMixin
+        }, {
+            title: "Custom error",
+            fn: snippetCustomError
+        }, {
+            title: "Promise",
+            fn: snippetPromise
+        }, ];
+
+        let i = 1;
+        for (const snippet of snippets) {
+            document.writeln(`=== ${i} ${snippet.title} <br />`);
+            const fn = snippet.fn;
+            fn();
+            document.writeln(`<br /> ===================== <br />`);
+            ++i;
+        }
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
