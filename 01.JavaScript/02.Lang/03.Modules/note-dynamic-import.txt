@@ -1,0 +1,3 @@
+use the `import(module-path)` statement to import module dynamically
+
+Dynamic module imports can be used in regular scripts
