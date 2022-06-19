@@ -1,0 +1,16 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "es2015",
+        "removeComments": true,
+        "outDir": "js",
+        "sourceMap": true,
+        "outFile": "src/app.js",
+        "allowJs": true,
+        "checkJs": true,
+        "noEmitOnError": true,
+        "strictNullChecks": true,
+        //"module": "ES2015"
+    },
+    "include": ["src/**/*", "tests/**/*"]
+}
