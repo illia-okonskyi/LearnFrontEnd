@@ -53,13 +53,13 @@ function App() {
     storiesReducer,
     { data: [], isLoading: false, isError: false });
 
-  React.useEffect(() => {
+  const handleFetchStories = React.useCallback(() => {
     if (!searchTerm) return;
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    fetch(`${API_ENDPOINT}${searchTerm}`) // B
-      .then((response) => response.json()) // C
+    fetch(`${API_ENDPOINT}${searchTerm}`)
+      .then((response) => response.json())
       .then(result => {
         dispatchStories({
           type: 'STORIES_FETCH_SUCCESS',
@@ -69,12 +69,15 @@ function App() {
       .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' }));
   }, [searchTerm]);
 
+  React.useEffect(() => {
+    handleFetchStories();
+  }, [handleFetchStories]);
 
   const handleRemoveStory = (item) => {
     dispatchStories({
       type: 'REMOVE_STORY',
       payload: item,
-      });
+    });
   };
 
   const handleSearch = (event) => {
