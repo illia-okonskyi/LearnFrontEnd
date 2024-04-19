@@ -51,7 +51,13 @@ function App() {
     <div>
       <h1>My Hacker Stories</h1>
 
-      <Search search={searchTerm} onSearch={handleSearch} />
+      <InputWithLabel
+        id="search"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      >
+        <strong>Search:</strong>
+      </InputWithLabel>
 
       <hr />
 
@@ -60,18 +66,25 @@ function App() {
   );
 }
 
-const Search = ({ search, onSearch }) => {
-  return (
-    <> {/* shorthand for <React.Fragment> */}
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" value={search} onChange={onSearch} />
-    </>
-  );
-};
+const InputWithLabel = ({ id, value, type = 'text', onInputChange, children }) => (
+  <>
+    <label htmlFor={id}>{children}</label>
+    &nbsp;
+    <input
+      id={id}
+      type={type}
+      value={value}
+      onChange={onInputChange}
+    />
+  </>
+);
 
-Search.propTypes = {
-  search: PropTypes.string,
-  onSearch: PropTypes.func
+InputWithLabel.propTypes = {
+  id: PropTypes.string,
+  type: PropTypes.string,
+  value: PropTypes.any,
+  onInputChange: PropTypes.func,
+  children: PropTypes.element,
 }
 
 const List = ({ list }) => (
