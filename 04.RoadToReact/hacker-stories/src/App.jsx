@@ -1,6 +1,7 @@
 
 import * as React from "react"
 import PropTypes from "prop-types";
+import axios from 'axios';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
@@ -62,15 +63,16 @@ function App() {
   const handleFetchStories = React.useCallback(() => {
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    fetch(url)
-      .then((response) => response.json())
+    axios
+      .get(url)
       .then(result => {
         dispatchStories({
           type: 'STORIES_FETCH_SUCCESS',
-          payload: result.hits
+          payload: result.data.hits
         });
       })
-      .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' }));
+      .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE' }
+      ));
   }, [url]);
 
   React.useEffect(() => {
