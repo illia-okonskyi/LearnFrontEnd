@@ -111,6 +111,11 @@ function App() {
       </button>
 
       <hr />
+      <SearchForm
+        searchTerm={searchTerm}
+        onSearchInput={handleSearchInput}
+        onSearchSubmit={handleSearchSubmit}
+      />
 
       {stories.isError && <p>Something went wrong ...</p>}
       {stories.isLoading ? (
@@ -121,6 +126,33 @@ function App() {
     </div>
   );
 }
+
+const SearchForm = ({
+  searchTerm,
+  onSearchInput,
+  onSearchSubmit,
+}) => (
+  <form onSubmit={onSearchSubmit} className="search-form">
+    <InputWithLabel
+      id="search"
+      value={searchTerm}
+      isFocused
+      onInputChange={onSearchInput}
+    >
+      <strong>Search:</strong>
+    </InputWithLabel>
+    <button type="submit" disabled={!searchTerm} className="button button_large">
+      Submit
+    </button>
+  </form>
+);
+
+SearchForm.propTypes = {
+  searchTerm: PropTypes.string,
+  onSearchInput: PropTypes.func,
+  onSearchSubmit: PropTypes.func,
+};
+
 
 const InputWithLabel = ({ id, value, type = 'text', onInputChange, isFocused, children }) => {
   const inputRef = React.useRef();
