@@ -3,75 +3,6 @@ import * as React from "react"
 import PropTypes from "prop-types";
 import axios from 'axios';
 
-import styled from 'styled-components';
-
-const StyledContainer = styled.div`
-  height: 100vw;
-  padding: 20px;
-  background: #83a4d4;
-  background: linear-gradient(to left, #b6fbff, #83a4d4);
-  color: #171212;
-`;
-const StyledHeadlinePrimary = styled.h1`
-  font-size: 48px;
-  font-weight: 300;
-  letter-spacing: 2px;
-`;
-
-const StyledItem = styled.li`
-  display: flex;
-  align-items: center;
-  padding-bottom: 5px;
-`;
-const StyledColumn = styled.span`
-  padding: 0 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  a {
-    color: inherit;
-  }
-  width: ${(props) => props.width};
-`;
-
-const StyledButton = styled.button`
-  background: transparent;
-  border: 1px solid #171212;
-  padding: 5px;
-  cursor: pointer;
-  transition: all 0.1s ease-in;
-  &:hover {
-    background: #171212;
-    color: #ffffff;
-  }
-`;
-
-const StyledButtonSmall = styled(StyledButton)`
-  padding: 5px;
-`;
-const StyledButtonLarge = styled(StyledButton)`
-  padding: 10px;
-`;
-const StyledSearchForm = styled.form`
-  padding: 10px 0 20px 0;
-  display: flex;
-  align-items: baseline;
-`;
-
-const StyledLabel = styled.label`
-  border-top: 1px solid #171212;
-  border-left: 1px solid #171212;
-  padding-left: 5px;
-  font-size: 24px;
-`;
-const StyledInput = styled.input`
-  border: none;
-  border-bottom: 1px solid #171212;
-  background-color: transparent;
-  font-size: 24px;
-`;
-
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 const useStorageState = (key, initialState) => {
@@ -161,9 +92,25 @@ function App() {
   };
 
   return (
-    <StyledContainer>
-      <StyledHeadlinePrimary>My Hacker Stories</StyledHeadlinePrimary>
+    <div>
+      <h1>My Hacker Stories</h1>
 
+      <InputWithLabel
+        id="search"
+        value={searchTerm}
+        onInputChange={handleSearchInput}
+      >
+        <strong>Search:</strong>
+      </InputWithLabel>
+
+      <button
+        type="button"
+        disabled={!searchTerm}
+        onClick={handleSearchSubmit}>
+        Submit
+      </button>
+
+      <hr />
       <SearchForm
         searchTerm={searchTerm}
         onSearchInput={handleSearchInput}
@@ -176,7 +123,7 @@ function App() {
       ) : (
         <List list={stories.data} onRemoveItem={handleRemoveStory} />
       )}
-    </StyledContainer>
+    </div>
   );
 }
 
@@ -185,7 +132,7 @@ const SearchForm = ({
   onSearchInput,
   onSearchSubmit,
 }) => (
-  <StyledSearchForm onSubmit={onSearchSubmit}>
+  <form onSubmit={onSearchSubmit} className="search-form">
     <InputWithLabel
       id="search"
       value={searchTerm}
@@ -194,10 +141,10 @@ const SearchForm = ({
     >
       <strong>Search:</strong>
     </InputWithLabel>
-    <StyledButtonLarge type="submit" disabled={!searchTerm}>
+    <button type="submit" disabled={!searchTerm} className="button button_large">
       Submit
-    </StyledButtonLarge>
-  </StyledSearchForm>
+    </button>
+  </form>
 );
 
 SearchForm.propTypes = {
@@ -217,9 +164,10 @@ const InputWithLabel = ({ id, value, type = 'text', onInputChange, isFocused, ch
 
   return (
     <>
-      <StyledLabel htmlFor={id}>{children}</StyledLabel>
+      <label htmlFor={id}>{children}</label>
       &nbsp;
-      <StyledInput ref={inputRef}
+      <input
+        ref={inputRef}
         id={id}
         type={type}
         value={value}
@@ -253,19 +201,19 @@ List.propTypes = {
 
 const Item = ({ item, onRemoveItem }) => {
   return (
-    <StyledItem>
-      <StyledColumn width="40%">
+    <li>
+      <span>
         <a href={item.url}>{item.title}</a>
-      </StyledColumn>
-      <StyledColumn width="30%">{item.author}</StyledColumn>
-      <StyledColumn width="10%">{item.num_comments}</StyledColumn>
-      <StyledColumn width="10%">{item.points}</StyledColumn>
-      <StyledColumn width="10%">
-        <StyledButtonSmall type="button" onClick={() => onRemoveItem(item)}>
+      </span>
+      <span>{item.author}</span>
+      <span>{item.num_comments}</span>
+      <span>{item.points}</span>
+      <span>
+        <button type="button" onClick={() => onRemoveItem(item)}>
           Dismiss
-        </StyledButtonSmall>
-      </StyledColumn>
-    </StyledItem>
+        </button>
+      </span>
+    </li>
   );
 }
 
