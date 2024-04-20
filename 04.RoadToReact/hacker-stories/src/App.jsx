@@ -3,8 +3,6 @@ import * as React from "react"
 import PropTypes from "prop-types";
 import axios from 'axios';
 
-import './App.css';
-
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 const useStorageState = (key, initialState) => {
@@ -82,9 +80,8 @@ function App() {
   const handleSearchInput = (event) => {
     setSearchTerm(event.target.value);
   };
-  const handleSearchSubmit = (event) => {
+  const handleSearchSubmit = () => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
-    event.preventDefault();
   };
 
   const handleRemoveStory = (item) => {
@@ -95,14 +92,25 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <h1 className="headline-primary">My Hacker Stories</h1>
+    <div>
+      <h1>My Hacker Stories</h1>
 
-      <SearchForm
-        searchTerm={searchTerm}
-        onSearchInput={handleSearchInput}
-        onSearchSubmit={handleSearchSubmit}
-      />
+      <InputWithLabel
+        id="search"
+        value={searchTerm}
+        onInputChange={handleSearchInput}
+      >
+        <strong>Search:</strong>
+      </InputWithLabel>
+
+      <button
+        type="button"
+        disabled={!searchTerm}
+        onClick={handleSearchSubmit}>
+        Submit
+      </button>
+
+      <hr />
 
       {stories.isError && <p>Something went wrong ...</p>}
       {stories.isLoading ? (
@@ -124,7 +132,7 @@ const InputWithLabel = ({ id, value, type = 'text', onInputChange, isFocused, ch
 
   return (
     <>
-      <label htmlFor={id} className="label">{children}</label>
+      <label htmlFor={id}>{children}</label>
       &nbsp;
       <input
         ref={inputRef}
@@ -132,7 +140,6 @@ const InputWithLabel = ({ id, value, type = 'text', onInputChange, isFocused, ch
         type={type}
         value={value}
         onChange={onInputChange}
-        className="input"
       />
     </>
   );
@@ -146,32 +153,6 @@ InputWithLabel.propTypes = {
   isFocused: PropTypes.bool,
   children: PropTypes.element,
 }
-
-const SearchForm = ({
-  searchTerm,
-  onSearchInput,
-  onSearchSubmit,
-}) => (
-  <form onSubmit={onSearchSubmit} className="search-form">
-    <InputWithLabel
-      id="search"
-      value={searchTerm}
-      isFocused
-      onInputChange={onSearchInput}
-    >
-      <strong>Search:</strong>
-    </InputWithLabel>
-    <button type="submit" disabled={!searchTerm} className="button button_large">
-      Submit
-    </button>
-  </form>
-);
-
-SearchForm.propTypes = {
-  searchTerm: PropTypes.string,
-  onSearchInput: PropTypes.func,
-  onSearchSubmit: PropTypes.func,
-};
 
 const List = ({ list, onRemoveItem }) => (
   <ul>
@@ -188,19 +169,15 @@ List.propTypes = {
 
 const Item = ({ item, onRemoveItem }) => {
   return (
-    <li className="item">
-      <span style={{ width: '40%' }}>
+    <li>
+      <span>
         <a href={item.url}>{item.title}</a>
       </span>
-      <span style={{ width: '30%' }}>{item.author}</span>
-      <span style={{ width: '10%' }}>{item.num_comments}</span>
-      <span style={{ width: '10%' }}>{item.points}</span>
-      <span style={{ width: '10%' }}>
-        <button
-          type="button"
-          onClick={() => onRemoveItem(item)}
-          className="button button_small"
-        >
+      <span>{item.author}</span>
+      <span>{item.num_comments}</span>
+      <span>{item.points}</span>
+      <span>
+        <button type="button" onClick={() => onRemoveItem(item)}>
           Dismiss
         </button>
       </span>
